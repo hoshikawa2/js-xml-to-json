@@ -1,5 +1,3 @@
-//https://codebeautify.org/jsonviewer
-
 function ConvertXMLToJSON(xml) {
     var retorno = "";
 
