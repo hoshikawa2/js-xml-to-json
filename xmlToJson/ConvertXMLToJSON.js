@@ -10,7 +10,7 @@ function ConvertXMLToJSON(xml) {
     var strAcumulado = "";
     var limit = 0;
 
-    var c = 0; //contador
+    var c = 0;
     xml = xml.replace(/(\r\n|\n|\r)/gm, "");
 
     while (c < xml.length){
@@ -82,6 +82,25 @@ function ConvertXMLToJSON(xml) {
 
         if (xml.substr(c, 1) == "<") {
 
+            var f = c;
+            var outNull = 0;
+            while (f < xml.length){
+                if (xml.substr(f, 1) == ">")
+                {
+                    break;
+                }
+                if (xml.substr(f, 2) == "/>")
+                {
+                    outNull = 1;
+                    break;
+                }
+                f++;
+            }
+            if (outNull == 1){
+                c = f + 1;
+                continue;
+            }
+
             token = 0;
             tagLoops++;
 
@@ -138,7 +157,7 @@ function ConvertXMLToJSON(xml) {
                             tagLoops = 0;
                         }
                     }
-                    tagAtual = tagAtual + xml.substr(novaPos, 1);
+                    tagAtual = (tagAtual + xml.substr(novaPos, 1)).trim();
                 }
                 novaPos++;
             }
@@ -223,9 +242,8 @@ function ConvertXMLToJSON(xml) {
     if (jsonStr.substr(jsonStr.length -1, 1) == ","){
         jsonStr = jsonStr.substr(0, jsonStr.length - 1);
     }
-    //jsonStr = jsonStr + "}";
 
-    var c = 0; //contador
+    var c = 0;
     out = 0;
     while (c < jsonStr.length) {
 
