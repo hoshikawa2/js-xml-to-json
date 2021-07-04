@@ -1,3 +1,5 @@
+//https://codebeautify.org/jsonviewer
+
 function ConvertXMLToJSON(xml) {
     var retorno = "";
 
@@ -104,6 +106,7 @@ function ConvertXMLToJSON(xml) {
 
             var novaPos = c+1;
             var out = 0;
+            var acumulaFlag = 1;
             while (novaPos < xml.length) {
                 if (xml.substr(novaPos, 1) == ">")
                 {
@@ -112,7 +115,11 @@ function ConvertXMLToJSON(xml) {
                     token = 1;
                     break;
                 }
-                if (token == 0)
+                if (xml.substr(novaPos, 1) == " " && token == 0)
+                {
+                    acumulaFlag = 0;
+                }
+                if (acumulaFlag == 1 && token == 0)
                 {
                     if (tagLoops > 1){
                         jsonStr = jsonStr + "{\"" + tagAtual + "\":";
