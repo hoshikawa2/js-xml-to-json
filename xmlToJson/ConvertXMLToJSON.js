@@ -13,6 +13,9 @@ function ConvertXMLToJSON(xml) {
     var c = 0;
     xml = xml.replace(/(\r\n|\n|\r)/gm, "");
 
+    //Retira espaços e caracteres entre uma Tag e outra
+    //Exceto conteúdo das tags
+    //Ignora também labels das tags
     while (c < xml.length){
         if (xml.substr(c, 1) == ">" && token == 0){
             xmltmp = xmltmp + xml.substr(c, 1);
@@ -48,6 +51,7 @@ function ConvertXMLToJSON(xml) {
     c = 0;
     while (c < xml.length){
 
+        //Valida o final da tag </
         if (xml.substr(c, 2) == "</")
         {
             tagLoops--;
@@ -60,6 +64,7 @@ function ConvertXMLToJSON(xml) {
             }
             var novaPos = c+2;
             var out = 0;
+            //Valida o final da tag para poder começar a processar o conteúdo da tag
             while (novaPos < xml.length) {
                 if (xml.substr(novaPos, 1) == ">")
                 {
@@ -84,6 +89,7 @@ function ConvertXMLToJSON(xml) {
 
             var f = c;
             var outNull = 0;
+            //Valida tags nulas <tag/>
             while (f < xml.length){
                 if (xml.substr(f, 1) == ">")
                 {
@@ -125,6 +131,7 @@ function ConvertXMLToJSON(xml) {
             var novaPos = c+1;
             var out = 0;
             var acumulaFlag = 1;
+            //Conversão para JSON da tag e conteúdo da tag
             while (novaPos < xml.length) {
                 if (xml.substr(novaPos, 1) == ">")
                 {
@@ -171,6 +178,7 @@ function ConvertXMLToJSON(xml) {
         if (token == 1) {
             var novaPos = c;
             var out = 0;
+            //Loop para buscar o conteúdo da Tag
             while (novaPos < xml.length) {
 
                 if (xml.substr(novaPos, 2) == "</")
@@ -214,6 +222,7 @@ function ConvertXMLToJSON(xml) {
                 }
                 novaPos++;
             }
+            //Se achou Tag e achou Conteúdo da Tag, transforma em JSON
             if (out == 1){
                 if (tagConteudoAtual == "") {
                     jsonStr = jsonStr + '"' + tagAtual + '":';
@@ -245,6 +254,7 @@ function ConvertXMLToJSON(xml) {
 
     var c = 0;
     out = 0;
+    //Tratamento dos arrays. Começa a inserir [ como parte de array JSON
     while (c < jsonStr.length) {
 
         if (jsonStr.substr(c, 1) == "{") {
@@ -265,6 +275,7 @@ function ConvertXMLToJSON(xml) {
     c = 0;
     token = 0;
     out = 0;
+    //Busca o fechamento dos arrays, substituindo as chaves } por ]
     while (c < jsonStr.length) {
 
         if (jsonStr.substr(c, 1) == "}") {
